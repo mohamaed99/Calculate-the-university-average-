@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب المعدل الجامعي</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            margin: 10px;
+            color: #333;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        input[type="number"] {
+            width: 50px;
+            height: 30px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>جامعة غرداية - كلية الحقوق والعلوم السياسية</h1>
+    <h2>قسم الحقوق - سنة ثانية جذع مشترك</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>المقياس</th>
+                <th>المعامل</th>
+                <th>علامة المحاضرة</th>
+                <th>علامة الأعمال الموجهة</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>القانون المدني</td>
+                <td>2</td>
+                <td><input type="number" name="lectureGrade"></td>
+                <td><input type="number" name="practicalGrade"></td>
+            </tr>
+            <tr>
+                <td>القانون التجاري</td>
+                <td>1</td>
+                <td><input type="number" name="lectureGrade"></td>
+                <td><input type="number" name="practicalGrade"></td>
+            </tr>
+            <tr>
+                <td>النظرية العامة للجريمة والعقوبة</td>
+                <td>2</td>
+                <td><input type="number" name="lectureGrade"></td>
+                <td><input type="number" name="practicalGrade"></td>
+            </tr>
+            <tr>
+                <td>منهجية العلوم القانونية</td>
+                <td>1</td>
+                <td><input type="number" name="lectureGrade"></td>
+                <td><input type="number" name="practicalGrade"></td>
+            </tr>
+            <tr>
+                <td>القانون الدولي العام</td>
+                <td>2</td>
+                <td><input type="number" name="lectureGrade"></td>
+                <td><input type="number" name="practicalGrade" disabled></td>
+            </tr>
+            <tr>
+                <td>قانون الأسرة</td>
+                <td>1</td>
+                <td><input type="number" name="lectureGrade"></td>
+                <td><input type="number" name="practicalGrade" disabled></td>
+            </tr>
+            <tr>
+                <td>لغة أجنبية</td>
+                <td>1</td>
+                <td><input type="number" name="lectureGrade"></td>
+                <td><input type="number" name="practicalGrade" disabled></td>
+            </tr>
+        </tbody>
+    </table>
+    <button onclick="calculateGPA()">احسب المعدل</button>
+    <p id="result"></p>
+
+    <footer>by: Mohamed alamine ch</footer>
+
+    <script>
+        function calculateGPA() {
+            const lectureGrades = document.getElementsByName('lectureGrade');
+            const practicalGrades = document.getElementsByName('practicalGrade');
+            const coefficients = [2, 1, 2, 6, 2, 2, 2];
+            let totalWeightedGrades = 0;
+            let totalCoefficients = 0;
+
+            for (let i = 0; i < coefficients.length; i++) {
+                const lectureGrade = parseFloat(lectureGrades[i].value);
+                const practicalGrade = practicalGrades[i] ? parseFloat(practicalGrades[i].value) : null;
+
+                if (isNaN(lectureGrade)) {
+                    alert('يرجى إدخال جميع علامات المحاضرات.');
+                    return;
+                }
+
+                let moduleAverage;
+                if (practicalGrades[i] && !practicalGrades[i].disabled && !isNaN(practicalGrade)) {
+                    moduleAverage = ((lectureGrade * 2) + practicalGrade) / 3;
+                } else {
+                    moduleAverage = lectureGrade;
+                }
+
+                totalWeightedGrades += moduleAverage * coefficients[i];
+                totalCoefficients += coefficients[i];
+            }
+
+            const gpa = (totalWeightedGrades / totalCoefficients).toFixed(2);
+            document.getElementById('result').innerText = `معدلك الجامعي هو: ${gpa}`;
+        }
+    </script>
+</body>
+</html>
